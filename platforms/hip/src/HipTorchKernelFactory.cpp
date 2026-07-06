@@ -32,7 +32,7 @@
 #include <exception>
 
 #include "HipTorchKernelFactory.h"
-#include "CommonTorchKernels.h"
+#include "HipTorchKernels.h"
 #include "openmm/hip/HipContext.h"
 #include "openmm/internal/windowsExport.h"
 #include "openmm/internal/ContextImpl.h"
@@ -71,8 +71,8 @@ extern "C" OPENMM_EXPORT void registerTorchHipKernelFactories() {
 KernelImpl* HipTorchKernelFactory::createKernelImpl(std::string name, const Platform& platform, ContextImpl& context) const {
     HipContext& cc = *static_cast<HipPlatform::PlatformData*>(context.getPlatformData())->contexts[0];
     if (name == CalcTorchForceKernel::Name())
-        return new CommonCalcTorchForceKernel(name, platform, cc);
+        return new HipCalcTorchForceKernel(name, platform, cc);
     if (name == CalcPythonTorchForceKernel::Name())
-        return new CommonCalcPythonTorchForceKernel(name, platform, context, cc);
+        return new HipCalcPythonTorchForceKernel(name, platform, context, cc);
     throw OpenMMException((std::string("Tried to create kernel with illegal kernel name '")+name+"'").c_str());
 }
